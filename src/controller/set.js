@@ -92,7 +92,7 @@ layui.define(['form', 'upload'], function(exports){
 		//提交修改
 
 		admin.req({
-			url: setter.mainAddress + 'updateUserInfo'
+			url: setter.mainAddress + 'auth/updateUserInfo'
 			,data: obj.field
 			,method: "POST"
 			,done: function(res){
@@ -153,7 +153,7 @@ layui.define(['form', 'upload'], function(exports){
 
 		//提交修改
 		admin.req({
-			url: setter.mainAddress + 'updatePassword'
+			url: setter.mainAddress + 'auth/updatePassword'
 			,data: obj.field
 			,method: "POST"
 			,done: function(res){
@@ -173,7 +173,7 @@ layui.define(['form', 'upload'], function(exports){
 	});
 
 	admin.req({
-		url: setter.mainAddress + 'getUserInfo' //实际使用请改成服务端真实接口
+		url: setter.mainAddress + 'auth/getUserInfo' //实际使用请改成服务端真实接口
 		,done: function(res){
 			console.log(res);
 			$("option[opt='role']").each(function (value) {

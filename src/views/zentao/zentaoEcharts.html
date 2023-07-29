@@ -1,0 +1,61 @@
+<div id="zentaoEcharts-html" class="layui-fluid layui-col-space5">
+	<div class="layui-form" style="margin-bottom: -15px">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">日期范围：</label>
+				<div class="layui-inline" id="zentao-rangeLinked">
+					<div class="layui-input-inline">
+						<input type="text" autocomplete="off" name="dateStart" id="zentao-start-date-1" class="layui-input" placeholder="开始日期">
+					</div>
+					<div class="layui-form-mid">-</div>
+					<div class="layui-input-inline">
+						<input type="text" autocomplete="off" name="dateEnd" id="zentao-end-date-1" class="layui-input" placeholder="结束日期">
+					</div>
+				</div>
+				<button type="submit" class="layui-btn layui-btn-sm layui-btn-primary layui-border-black" lay-submit lay-filter="zentaoSearch">查询</button>
+			</div>
+		</div>
+	</div>
+	<div id="tb1" class="layui-col-md8">
+		<div class="layui-card">
+			<div id="tb1-header" class="layui-card-header"></div>
+			<div class="layui-card-body layui-card-body-height">
+				<div id="tb1-body" style="height: 100%;"></div>
+			</div>
+		</div>
+	</div>
+	<div id="tb2" class="layui-col-md4">
+		<div class="layui-card">
+			<div id="tb2-header" class="layui-card-header"></div>
+			<div class="layui-card-body layui-card-body-height">
+				<div id="tb2-body" style="height: 100%;"></div>
+			</div>
+		</div>
+	</div>
+	<div id="tb3" class="layui-col-md4">
+		<div class="layui-card">
+			<div id="tb3-header" class="layui-card-header"></div>
+			<div class="layui-card-body layui-card-body-height">
+				<div id="tb3-body" style="height: 100%;"></div>
+			</div>
+		</div>
+	</div>
+	<div id="tb4" class="layui-col-md8">
+		<div class="layui-card">
+			<div id="tb4-header" class="layui-card-header"></div>
+			<div class="layui-card-body layui-card-body-height">
+				<div id="tb4-body" style="height: 100%;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+    .layui-card-body-height{height: 300px !important;}
+    .layui-card-body-height>*[carousel-item]:before{display: none;}
+    .layui-card-body-height>*[carousel-item]>div{height: 300px;}
+</style>
+
+<script>
+	layui.use('zentao', layui.factory('zentao'));
+</script>

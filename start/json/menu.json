@@ -8,7 +8,19 @@
 			"list": [
 				{
 					"title": "控制台",
-					"jump": "/"
+					"jump": "#"
+				}
+			]
+		},
+		{
+			"name": "zentao",
+			"title": "禅道",
+			"icon": "layui-icon-set",
+			"list": [
+				{
+					"name": "zentaoEcharts",
+					"title": "禅道图表分析",
+					"jump": "/zentao/zentaoEcharts"
 				}
 			]
 		},

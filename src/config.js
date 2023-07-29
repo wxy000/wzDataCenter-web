@@ -25,7 +25,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
 		,interceptor: true //是否开启未登入拦截
 
 		//自定义
-		,mainAddress: 'http://127.0.0.1:8080/auth/'
+		,mainAddress: 'http://127.0.0.1:8080/'
 
 		//自定义请求字段
 		,request: {
@@ -54,7 +54,9 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
 		//扩展的第三方模块
 		,extend: [
 			'echarts', //echarts 核心包
-			'echartsTheme' //echarts 主题
+			'echartsTheme', //echarts 主题
+			'wzClone',
+			'readEcharts'
 		]
 
 		//主题配置
