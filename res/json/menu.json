@@ -1,0 +1,50 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": [
+		{
+			"title": "主页",
+			"icon": "layui-icon-home",
+			"list": [
+				{
+					"title": "控制台",
+					"jump": "/"
+				}
+			]
+		},
+		{
+			"name": "zentao",
+			"title": "禅道",
+			"icon": "layui-icon-set",
+			"list": [
+				{
+					"name": "zentaoEcharts",
+					"title": "禅道图表分析",
+					"jump": "/zentao/zentaoEcharts"
+				}
+			]
+		},
+		{
+			"name": "set",
+			"title": "设置",
+			"icon": "layui-icon-set",
+			"list": [
+				{
+					"name": "user",
+					"title": "我的设置",
+					"spread": true,
+					"list": [
+						{
+							"name": "info",
+							"title": "基本资料"
+						},
+						{
+							"name": "password",
+							"title": "修改密码"
+						}
+					]
+				}
+			]
+		}
+	]
+}
