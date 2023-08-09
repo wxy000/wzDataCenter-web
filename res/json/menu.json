@@ -15,7 +15,7 @@
 		{
 			"name": "zentao",
 			"title": "禅道",
-			"icon": "layui-icon-set",
+			"icon": "layui-icon-chart-screen",
 			"list": [
 				{
 					"name": "zentaoEcharts",
