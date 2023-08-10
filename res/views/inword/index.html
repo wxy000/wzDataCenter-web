@@ -1,0 +1,30 @@
+<div class="layui-fluid" id="LAY-component-grid-speed-dial">
+	<div class="layui-row layui-col-space10" id="inword">
+		<script type="text/html" template>
+			{{# for (var i=0;i<layui.setter.inwordNum;i++){ }}
+			<div class="layui-col-xs4">
+				<div class="layui-card">
+					<div class="layui-card-body">
+						<div style="height: 25%;" {{- 'id="inword'+(i+1)+'"' }}></div>
+						<div style="height: 75%;">
+							<img class='img' {{- 'id="inwordimg'+(i+1)+'"' }} src="">
+						</div>
+					</div>
+				</div>
+			</div>
+			{{# } }}
+		</script>
+	</div>
+</div>
+<style>
+    .img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        box-shadow:8px 8px 10px #CCCCCC;
+        /*opacity:0.5;*/
+    }
+</style>
+<script>
+	layui.use('inword', layui.factory('inword'));
+</script>
