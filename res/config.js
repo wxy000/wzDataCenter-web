@@ -30,7 +30,7 @@ layui.define(['all'], function(exports){
         interceptor: true, // 是否开启未登入拦截
 
         //自定义
-        mainAddress: 'http://127.0.0.1:8080/',
+        mainAddress: 'https://dc.wangxingyi.top/',
         inwordNum: 9,   // ‘一言’返回的个数
 
         // 自定义请求字段

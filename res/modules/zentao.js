@@ -1,5 +1,5 @@
 layui.define(function(exports){
-	layui.use(['layer', 'form', 'echarts', 'wzClone', 'readEcharts'], function(){
+	layui.use(['layer', 'form', 'echarts', 'wzClone', 'readEcharts', 'table'], function(){
 		const layer = layui.layer,
 			$ = layui.$,
 			admin = layui.admin,
@@ -8,6 +8,7 @@ layui.define(function(exports){
 			form = layui.form,
 			echarts = layui.echarts,
 			wzClone = layui.wzClone,
+			table = layui.table,
 			readEcharts = layui.readEcharts;
 
 		laydate.render({
@@ -62,6 +63,97 @@ layui.define(function(exports){
 			return result;
 		}
 
+		function getDataTable(tableId,divID){
+			table.render({
+				elem: '#'+tableId,
+				cols: [[ //标题栏
+					{field: 'id', title: 'ID', width: 80, sort: true},
+					{field: 'username', title: '用户', width: 120},
+					{field: 'sign', title: '签名', minWidth: 160},
+					{field: 'sex', title: '性别', width: 80},
+					{field: 'city', title: '城市', width: 100},
+					{field: 'experience', title: '积分', width: 80, sort: true}
+				]],
+				data: [{ // 赋值已知数据
+					"id": "10001",
+					"username": "张三1",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "116"
+				}, {
+					"id": "10002",
+					"username": "张三2",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "12",
+					"LAY_CHECKED": true
+				}, {
+					"id": "10003",
+					"username": "张三3",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "65"
+				}, {
+					"id": "10004",
+					"username": "张三4",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "777"
+				}, {
+					"id": "10005",
+					"username": "张三5",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "86"
+				}, {
+					"id": "10006",
+					"username": "张三6",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "12"
+				}, {
+					"id": "10007",
+					"username": "张三7",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "16"
+				}, {
+					"id": "10008",
+					"username": "张三8",
+					"sex": "男",
+					"city": "浙江杭州",
+					"sign": "人生恰似一场修行",
+					"experience": "106"
+				}],
+				height: '#'+divID+'-0',
+				//skin: 'line', // 表格风格
+				//even: true,
+				page: true, // 是否显示分页
+				limits: [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+				limit: 5 // 每页默认显示的数量
+			});
+		}
+		function getDataList(data){
+			layer.open({
+				type: 1, // page 层类型
+				area: ['60%', '60%'],
+				title: data.name,
+				shade: 0.6, // 遮罩透明度
+				shadeClose: true, // 点击遮罩区域，关闭弹层
+				maxmin: true, // 允许全屏最小化
+				anim: 0, // 0-6 的动画形式，-1 不开启
+				content: '<div id="openwindow1" style="height: 100%"><table class="layui-hide" id="ID-table-demo-data"></table></div>'
+			});
+			getDataTable("ID-table-demo-data","openwindow1");
+		}
+
 		let option = ""
 		/*******************第一个图表-start*********************/
 		const myChart_leixing_s = echarts.init(document.getElementById('tb1-body'));
@@ -71,7 +163,7 @@ layui.define(function(exports){
 			option.xAxis.data = data.data.type1;
 			option.xAxis.axisLabel = { interval: 0, rotate: 20 };
 			option.series[0].name = "预计时长";
-			option.series[0].type = "bar";
+			option.series[0].type = "line";
 			option.series[0].smooth = false;
 			option.series[0].markPoint = {};
 			option.series[0].markLine = {};
@@ -80,7 +172,7 @@ layui.define(function(exports){
 
 			let series1 = wzClone.deepClone(readEcharts.seriesEcharts);
 			series1.name = "实际时长";
-			series1.type = "bar";
+			series1.type = "line";
 			series1.smooth = false;
 			series1.data = data.data.shiji;
 			series1.markPoint = {};
@@ -97,6 +189,8 @@ layui.define(function(exports){
 			delete option.legend;
 			delete option.xAxis;
 			delete option.yAxis;
+			option.tooltip.trigger = "item";
+			option.tooltip.formatter = "{b} : {c} ({d}%)";
 			option.series[0].name = "时长";
 			option.series[0].type = "pie";
 			option.series[0].markPoint = {};
@@ -105,6 +199,10 @@ layui.define(function(exports){
 			option.dataZoom = [];
 			// 使用刚指定的配置项和数据显示图表。
 			mychart.setOption(option);
+			// 点击事件
+			mychart.on('click', function (param){
+				getDataList(param);
+			});
 		}
 		let yujiLeixing = ""
 		let shijiLeixing = ""
@@ -115,6 +213,8 @@ layui.define(function(exports){
 			delete option.legend;
 			delete option.xAxis;
 			delete option.yAxis;
+			option.tooltip.trigger = "item";
+			option.tooltip.formatter = "{b} : {c} ({d}%)";
 			option.series[0].name = "时长";
 			option.series[0].type = "pie";
 			option.series[0].markPoint = {};
@@ -123,6 +223,10 @@ layui.define(function(exports){
 			option.dataZoom = [];
 			// 使用刚指定的配置项和数据显示图表。
 			mychart.setOption(option);
+			// 点击事件
+			mychart.on('click', function (param){
+				getDataList(param);
+			});
 		}
 		let yujiCustomer = ""
 		let shijiCustomer = ""
