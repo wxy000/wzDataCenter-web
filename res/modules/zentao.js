@@ -30,6 +30,9 @@ layui.define(function(exports){
 			"</div>");
 		$("#tb4-header").css({"font-weight":"bold"}).html("按客户分类");
 
+		// 公共变量
+		var field = {}
+
 		// 获取到数据
 		function getDataLeixing(data){
 			let result = ''
@@ -63,85 +66,35 @@ layui.define(function(exports){
 			return result;
 		}
 
-		function getDataTable(tableId,divID){
+		function getDataTable(tableId,divID,type0){
+			field.type0 = type0;
 			table.render({
 				elem: '#'+tableId,
 				cols: [[ //标题栏
-					{field: 'id', title: 'ID', width: 80, sort: true},
-					{field: 'username', title: '用户', width: 120},
-					{field: 'sign', title: '签名', minWidth: 160},
-					{field: 'sex', title: '性别', width: 80},
-					{field: 'city', title: '城市', width: 100},
-					{field: 'experience', title: '积分', width: 80, sort: true}
+					{field: 'id', title: 'ID', width: 80, sort: true,hide:true},
+					{field: 'customername', title: '客户名称', width: 90},
+					{field: 'titlename', title: '任务标题', minWidth: 120,templet: function (d){
+						return '<a href="http://124.221.178.62/zentao/task-view-'+d.id+'.html" class="layui-table-link" target="_blank">'+d.titlename+'</a>'
+						}},
+					{field: 'work', title: '工作内容', minWidth: 120},
+					{field: 'workdate', title: '日期', width: 100},
+					{field: 'esti', title: '预计时数', width: 80, sort: true},
+					{field: 'cons', title: '实际时数', width: 80, sort: true}
 				]],
-				data: [{ // 赋值已知数据
-					"id": "10001",
-					"username": "张三1",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "116"
-				}, {
-					"id": "10002",
-					"username": "张三2",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "12",
-					"LAY_CHECKED": true
-				}, {
-					"id": "10003",
-					"username": "张三3",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "65"
-				}, {
-					"id": "10004",
-					"username": "张三4",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "777"
-				}, {
-					"id": "10005",
-					"username": "张三5",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "86"
-				}, {
-					"id": "10006",
-					"username": "张三6",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "12"
-				}, {
-					"id": "10007",
-					"username": "张三7",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "16"
-				}, {
-					"id": "10008",
-					"username": "张三8",
-					"sex": "男",
-					"city": "浙江杭州",
-					"sign": "人生恰似一场修行",
-					"experience": "106"
-				}],
+				headers: {'access_token': layui.data(setter.tableName)[setter.request.tokenName]},
+				url: setter.mainAddress + 'zentao/getAnalysisCustomerDetail',
+				where: field,
 				height: '#'+divID+'-0',
 				//skin: 'line', // 表格风格
 				//even: true,
 				page: true, // 是否显示分页
-				limits: [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
-				limit: 5 // 每页默认显示的数量
+				//limits: [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+				//limit: 5 // 每页默认显示的数量
 			});
 		}
 		function getDataList(data){
 			layer.open({
+				id: "customerDetail",
 				type: 1, // page 层类型
 				area: ['60%', '60%'],
 				title: data.name,
@@ -151,7 +104,7 @@ layui.define(function(exports){
 				anim: 0, // 0-6 的动画形式，-1 不开启
 				content: '<div id="openwindow1" style="height: 100%"><table class="layui-hide" id="ID-table-demo-data"></table></div>'
 			});
-			getDataTable("ID-table-demo-data","openwindow1");
+			getDataTable("ID-table-demo-data","openwindow1",data.name.slice(0,data.name.indexOf(".")));
 		}
 
 		let option = ""
@@ -225,7 +178,7 @@ layui.define(function(exports){
 			mychart.setOption(option);
 			// 点击事件
 			mychart.on('click', function (param){
-				getDataList(param);
+				//getDataList(param);
 			});
 		}
 		let yujiCustomer = ""
@@ -259,7 +212,7 @@ layui.define(function(exports){
 		/*******************第四个图表-end*********************/
 
 		form.on('submit(zentaoSearch)', function(data){
-			var field = data.field;
+			field = data.field;
 			/*******************第一个图表-start*********************/
 			field.type0 = "1"
 			const sLeixing = getDataLeixing(field);
