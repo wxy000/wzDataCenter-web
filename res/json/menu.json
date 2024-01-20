@@ -21,6 +21,11 @@
 					"name": "zentaoEcharts",
 					"title": "禅道图表分析",
 					"jump": "/zentao/zentaoEcharts"
+				},
+				{
+					"name": "zentaoEchartsZ",
+					"title": "禅道图表分析-年度",
+					"jump": "/zentao/zentaoEchartsZ"
 				}
 			]
 		},
