@@ -133,6 +133,7 @@ layui.define(function(exports){
 			option.legend.left = "center";
 			option.xAxis.boundaryGap = true;
 			option.xAxis.data = data.data.type1;
+			option.xAxis.axisLabel = { interval: 0, rotate: 20 };
 			option.series[0].name = "预计时长";
 			option.series[0].type = "bar";
 			option.series[0].smooth = false;
