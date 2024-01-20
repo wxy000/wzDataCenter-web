@@ -1,5 +1,5 @@
 layui.define(function(exports){
-	layui.use(['layer', 'form', 'echarts', 'wzClone', 'readEcharts'], function(){
+	layui.use(['layer', 'form', 'echarts', 'wzClone', 'readEcharts', 'table'], function(){
 		const layer = layui.layer,
 			$ = layui.$,
 			admin = layui.admin,
@@ -8,6 +8,7 @@ layui.define(function(exports){
 			form = layui.form,
 			echarts = layui.echarts,
 			wzClone = layui.wzClone,
+			table = layui.table,
 			readEcharts = layui.readEcharts;
 
 		laydate.render({
@@ -28,6 +29,9 @@ layui.define(function(exports){
 			"<button data-method=\"offset\" id=\"tb3-shiji\" data-type=\"shiji\" class=\"kehu layui-btn layui-btn-primary layui-btn-xs\">实际</button>\n" +
 			"</div>");
 		$("#tb4-header").css({"font-weight":"bold"}).html("按客户分类");
+
+		// 公共变量
+		var field = {}
 
 		// 获取到数据
 		function getDataLeixing(data){
@@ -62,6 +66,90 @@ layui.define(function(exports){
 			return result;
 		}
 
+		function getDataTable(tableId,divID,type0){
+			field.type0 = type0;
+			table.render({
+				elem: '#'+tableId,
+				cols: [[ //标题栏
+					{field: 'id', title: 'ID', width: 80, sort: true,hide:true},
+					{field: 'customername', title: '客户名称', width: 90},
+					{field: 'titlename', title: '任务标题', minWidth: 120,templet: function (d){
+						return '<a href="http://124.221.178.62/zentao/task-view-'+d.id+'.html" class="layui-table-link" target="_blank">'+d.titlename+'</a>'
+						}},
+					{field: 'work', title: '工作内容', minWidth: 120},
+					{field: 'workdate', title: '日期', width: 100},
+					{field: 'esti', title: '预计时数', width: 80, sort: true},
+					{field: 'cons', title: '实际时数', width: 80, sort: true}
+				]],
+				headers: {'access_token': layui.data(setter.tableName)[setter.request.tokenName]},
+				url: setter.mainAddress + 'zentao/getAnalysisCustomerDetail',
+				where: field,
+				height: '#'+divID+'-0',
+				//skin: 'line', // 表格风格
+				//even: true,
+				page: true, // 是否显示分页
+				//limits: [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+				//limit: 5 // 每页默认显示的数量
+			});
+		}
+
+		function getDataTable2(tableId,divID,project){
+			field.project = project;
+			table.render({
+				elem: '#'+tableId,
+				cols: [[ //标题栏
+					{field: 'id', title: 'ID', width: 80, sort: true,hide:true},
+					{field: 'leixing', title: '类型', width: 160},
+					{field: 'titlename', title: '任务标题', minWidth: 120,templet: function (d){
+							return '<a href="http://124.221.178.62/zentao/task-view-'+d.id+'.html" class="layui-table-link" target="_blank">'+d.titlename+'</a>'
+						}},
+					{field: 'work', title: '工作内容', minWidth: 120},
+					{field: 'workdate', title: '日期', width: 100},
+					{field: 'esti', title: '预计时数', width: 80, sort: true},
+					{field: 'cons', title: '实际时数', width: 80, sort: true}
+				]],
+				headers: {'access_token': layui.data(setter.tableName)[setter.request.tokenName]},
+				url: setter.mainAddress + 'zentao/getAnalysisLeixingDetail',
+				where: field,
+				height: '#'+divID+'-0',
+				//skin: 'line', // 表格风格
+				//even: true,
+				page: true, // 是否显示分页
+				//limits: [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+				//limit: 5 // 每页默认显示的数量
+			});
+		}
+
+		function getDataList(data){
+			layer.open({
+				id: "customerDetail",
+				type: 1, // page 层类型
+				area: ['60%', '60%'],
+				title: data.name,
+				shade: 0.6, // 遮罩透明度
+				shadeClose: true, // 点击遮罩区域，关闭弹层
+				maxmin: true, // 允许全屏最小化
+				anim: 0, // 0-6 的动画形式，-1 不开启
+				content: '<div id="openwindow1" style="height: 100%"><table class="layui-hide" id="ID-table-demo-data"></table></div>'
+			});
+			getDataTable("ID-table-demo-data","openwindow1",data.name.slice(0,data.name.indexOf(".")));
+		}
+
+		function getDataList2(data){
+			layer.open({
+				id: "leixingDetail",
+				type: 1, // page 层类型
+				area: ['60%', '60%'],
+				title: data.name,
+				shade: 0.6, // 遮罩透明度
+				shadeClose: true, // 点击遮罩区域，关闭弹层
+				maxmin: true, // 允许全屏最小化
+				anim: 0, // 0-6 的动画形式，-1 不开启
+				content: '<div id="openwindow2" style="height: 100%"><table class="layui-hide" id="ID-table-demo-data2"></table></div>'
+			});
+			getDataTable2("ID-table-demo-data2","openwindow2",data.name);
+		}
+
 		let option = ""
 		/*******************第一个图表-start*********************/
 		const myChart_leixing_s = echarts.init(document.getElementById('tb1-body'));
@@ -71,7 +159,7 @@ layui.define(function(exports){
 			option.xAxis.data = data.data.type1;
 			option.xAxis.axisLabel = { interval: 0, rotate: 20 };
 			option.series[0].name = "预计时长";
-			option.series[0].type = "bar";
+			option.series[0].type = "line";
 			option.series[0].smooth = false;
 			option.series[0].markPoint = {};
 			option.series[0].markLine = {};
@@ -80,7 +168,7 @@ layui.define(function(exports){
 
 			let series1 = wzClone.deepClone(readEcharts.seriesEcharts);
 			series1.name = "实际时长";
-			series1.type = "bar";
+			series1.type = "line";
 			series1.smooth = false;
 			series1.data = data.data.shiji;
 			series1.markPoint = {};
@@ -97,6 +185,8 @@ layui.define(function(exports){
 			delete option.legend;
 			delete option.xAxis;
 			delete option.yAxis;
+			option.tooltip.trigger = "item";
+			option.tooltip.formatter = "{b} : {c} ({d}%)";
 			option.series[0].name = "时长";
 			option.series[0].type = "pie";
 			option.series[0].markPoint = {};
@@ -105,6 +195,10 @@ layui.define(function(exports){
 			option.dataZoom = [];
 			// 使用刚指定的配置项和数据显示图表。
 			mychart.setOption(option);
+			// 点击事件
+			mychart.on('click', function (param){
+				getDataList(param);
+			});
 		}
 		let yujiLeixing = ""
 		let shijiLeixing = ""
@@ -115,6 +209,8 @@ layui.define(function(exports){
 			delete option.legend;
 			delete option.xAxis;
 			delete option.yAxis;
+			option.tooltip.trigger = "item";
+			option.tooltip.formatter = "{b} : {c} ({d}%)";
 			option.series[0].name = "时长";
 			option.series[0].type = "pie";
 			option.series[0].markPoint = {};
@@ -123,6 +219,10 @@ layui.define(function(exports){
 			option.dataZoom = [];
 			// 使用刚指定的配置项和数据显示图表。
 			mychart.setOption(option);
+			// 点击事件
+			mychart.on('click', function (param){
+				getDataList2(param);
+			});
 		}
 		let yujiCustomer = ""
 		let shijiCustomer = ""
@@ -156,7 +256,7 @@ layui.define(function(exports){
 		/*******************第四个图表-end*********************/
 
 		form.on('submit(zentaoSearch)', function(data){
-			var field = data.field;
+			field = data.field;
 			/*******************第一个图表-start*********************/
 			field.type0 = "1"
 			const sLeixing = getDataLeixing(field);
