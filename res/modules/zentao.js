@@ -76,7 +76,6 @@ layui.define(function(exports){
 					{field: 'titlename', title: '任务标题', minWidth: 120,templet: function (d){
 						return '<a href="http://124.221.178.62/zentao/task-view-'+d.id+'.html" class="layui-table-link" target="_blank">'+d.titlename+'</a>'
 						}},
-					{field: 'work', title: '工作内容', minWidth: 120},
 					{field: 'workdate', title: '日期', width: 100},
 					{field: 'esti', title: '预计时数', width: 80, sort: true},
 					{field: 'cons', title: '实际时数', width: 80, sort: true}
@@ -103,7 +102,6 @@ layui.define(function(exports){
 					{field: 'titlename', title: '任务标题', minWidth: 120,templet: function (d){
 							return '<a href="http://124.221.178.62/zentao/task-view-'+d.id+'.html" class="layui-table-link" target="_blank">'+d.titlename+'</a>'
 						}},
-					{field: 'work', title: '工作内容', minWidth: 120},
 					{field: 'workdate', title: '日期', width: 100},
 					{field: 'esti', title: '预计时数', width: 80, sort: true},
 					{field: 'cons', title: '实际时数', width: 80, sort: true}
