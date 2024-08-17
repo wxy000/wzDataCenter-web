@@ -17,6 +17,7 @@ layui.define(function(exports){
 
         $("#Ztb1-header").css({"font-weight":"bold"}).html("问题类型热力图（预计时长）");
         $("#Ztb2-header").css({"font-weight":"bold"}).html("客户热力图（预计时长）");
+        $("#Ztb3-header").css({"font-weight":"bold"}).html("客制返工关系图（预计时长）");
 
         function getDataZLeixing(data){
             let result = ''
@@ -38,6 +39,22 @@ layui.define(function(exports){
             let result = ''
             admin.req({
                 url: setter.mainAddress + 'zentao/getAnalysisHeatMapCustomer'
+                ,data: data
+                ,method: "GET"
+                ,async: false
+                ,cache: false
+                ,dataType: "JSON"
+                ,done: function(res){
+                    result = res;
+                }
+            });
+            return result;
+        }
+
+        function getDataZCustomization(data){
+            let result = ''
+            admin.req({
+                url: setter.mainAddress + 'zentao/getAnalysisLineCustomization'
                 ,data: data
                 ,method: "GET"
                 ,async: false
@@ -112,6 +129,30 @@ layui.define(function(exports){
         }
         /*******************客户热力图-end*********************/
 
+        /*******************客制返工关系图-start*********************/
+        const myChart_customization = echarts.init(document.getElementById('Ztb3-body'));
+        function getZentaoZCustomizationSearch(mychart,option,data){
+            console.log(data.data);
+
+            option.tooltip.axisPointer = {"animation":false};
+            option.legend.data = ['客制','返工'];
+            option.toolbox = {"feature":{"dataZoom":{"yAxisIndex":"none"},"restore":{},"saveAsImage":{}}};
+            option.axisPointer = {"link":[{"xAxisIndex":"all"}]};
+            option.grid = [{"left":60,"right":50,"height":"35%"},{"left":60,"right":50,"height":"35%","top":"55%"}];
+
+            option.xAxis = [{"type":"category","boundaryGap":false,"axisLabel":{onZero:true},"data":data.data.dataDate},
+                {"type":"category","boundaryGap":false,"axisLabel":{onZero:true},"data":data.data.dataDate,"gridIndex":1,"position":"top"}];
+
+            option.yAxis = [{"name":"时长","type":"value"},{"name":"时长","type":"value","gridIndex":1,"inverse":true}];
+
+            option.series = [{"name":"客制","type":"line","symbolSize":8,"data":data.data.dataKezhi},
+                {"name":"返工","type":"line","xAxisIndex":1,"yAxisIndex":1,"symbolSize":8,"data":data.data.dataFangong}];
+            option.dataZoom = [];
+            // 使用刚指定的配置项和数据显示图表。
+            mychart.setOption(option);
+        }
+        /*******************客制返工关系图-end*********************/
+
         form.on('submit(zentaoZSearch)', function(data){
             const field = data.field;
             if (field.dateYear===undefined||field.dateYear===""){
@@ -127,6 +168,11 @@ layui.define(function(exports){
                 option = wzClone.deepClone(readEcharts.simpleEcharts);
                 getZentaoZCustomerSearch1(myChart_customer_y,option,yCustomer);
                 /*******************客户热力图-end*********************/
+                /*******************客制返工关系图-start*********************/
+                const customization = getDataZCustomization(field);
+                option = wzClone.deepClone(readEcharts.simpleEcharts);
+                getZentaoZCustomizationSearch(myChart_customization,option,customization);
+                /*******************客制返工关系图-end*********************/
             }
             return false; // 阻止默认 form 跳转
         });
